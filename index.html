@@ -1,42 +1,992 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>仙途·问道</title><style>:root{--bg:#0a0a0f;--panel:#12121a;--gold:#d4a574;--text:#c8c0b8;--border:#2a2a35;--rarity-white:#b8b8b8;--rarity-green:#5cb878;--rarity-blue:#5b9bd5;--rarity-purple:#b07cd8;--rarity-gold:#e2b04a;--rarity-red:#ff5555}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);font-family:'Segoe UI','PingFang SC','Microsoft YaHei','Noto Serif SC',serif;display:flex;justify-content:center;align-items:center;min-height:100vh;color:var(--text);user-select:none;background-image:radial-gradient(ellipse at 50% 30%,rgba(180,140,100,0.06) 0%,transparent 70%)}.game-container{width:100%;max-width:520px;min-height:100vh;padding:12px;display:flex;flex-direction:column;gap:10px}.top-bar{display:flex;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}.top-bar .title{font-size:1.3rem;font-weight:bold;background:linear-gradient(180deg,#f0d6b8 0%,#c89650 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;cursor:pointer}.spirit-stones{display:flex;align-items:center;gap:6px;background:#1a1410;border:1px solid #4a3020;border-radius:20px;padding:6px 14px;font-weight:bold;color:#f0d6b8;font-size:0.95rem}.main-panel{flex:1;display:flex;flex-direction:column;gap:10px}.panel-box{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}.panel-title{font-size:0.9rem;color:var(--gold);letter-spacing:1px;margin-bottom:10px;font-weight:bold;display:flex;align-items:center;gap:6px}.team-preview{display:flex;gap:8px;min-height:70px;align-items:center;flex-wrap:wrap}.team-slot{flex:1;min-width:70px;aspect-ratio:3/4;max-width:100px;border-radius:10px;border:2px dashed #333;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#333;background:#0d0d15;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}.team-slot.filled{border-style:solid}.btn{padding:12px 20px;border-radius:25px;border:none;cursor:pointer;font-weight:bold;font-size:0.95rem;letter-spacing:1px;transition:all 0.25s;font-family:inherit}.btn:active{transform:scale(0.95)}.btn-primary{background:linear-gradient(135deg,#c89650 0%,#a07030 100%);color:#1a1008;box-shadow:0 4px 15px rgba(180,120,50,0.35)}.btn-secondary{background:#1e1e2c;color:#e0e0e0;border:1px solid #3a3a48}.btn-danger{background:#3a1018;color:#f08080;border:1px solid #5a2028}.btn-sm{padding:7px 14px;font-size:0.78rem;border-radius:18px}.btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.gacha-result{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;min-height:100px;align-items:center}.gacha-card{width:80px;aspect-ratio:3/4.2;border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;animation:cardReveal 0.5s ease-out;cursor:pointer;transition:transform 0.2s;position:relative}.gacha-card:hover{transform:translateY(-6px);z-index:10}@keyframes cardReveal{0%{transform:rotateY(90deg) scale(0.5);opacity:0}60%{transform:rotateY(-10deg) scale(1.05);opacity:1}100%{transform:rotateY(0deg) scale(1);opacity:1}}.card-rarity-white{background:linear-gradient(180deg,#3a3a3a 0%,#1a1a1a 100%);border:2px solid #555;color:#bbb}.card-rarity-green{background:linear-gradient(180deg,#2a4a30 0%,#142018 100%);border:2px solid #5cb878;color:#8ee8a8}.card-rarity-blue{background:linear-gradient(180deg,#1e3048 0%,#0e1828 100%);border:2px solid #5b9bd5;color:#8ec8f8}.card-rarity-purple{background:linear-gradient(180deg,#2a1e3a 0%,#150e20 100%);border:2px solid #b07cd8;color:#d0a8f8}.card-rarity-gold{background:linear-gradient(180deg,#3a2a10 0%,#1a1008 100%);border:2px solid #e2b04a;color:#f8d878;box-shadow:0 0 20px rgba(226,176,74,0.3)}.card-rarity-red{background:linear-gradient(180deg,#3a1018 0%,#1a080c 100%);border:2px solid #ff5555;color:#ff9999;box-shadow:0 0 25px rgba(255,85,85,0.4);animation:glowRed 2s infinite}@keyframes glowRed{0%,100%{box-shadow:0 0 25px rgba(255,85,85,0.4)}50%{box-shadow:0 0 45px rgba(255,85,85,0.7)}}.inventory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:8px;max-height:300px;overflow-y:auto}.inv-card{aspect-ratio:3/4.2;border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all 0.2s;font-size:0.7rem}.inv-card:hover{transform:translateY(-4px)}.inv-card.selected{outline:3px solid #fff;outline-offset:2px}.battle-field{display:flex;flex-direction:column;gap:10px}.battle-side{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:#0d0d16;border:1px solid #222}.battle-char{flex:1;text-align:center;padding:8px;border-radius:10px}.hp-bar-outer{height:8px;background:#1a1a1a;border-radius:10px;margin-top:4px;overflow:hidden}.hp-bar-inner{height:100%;border-radius:10px;transition:width 0.4s}.hp-green{background:#4caf84}.hp-yellow{background:#d4a040}.hp-red{background:#d04040}.battle-log{max-height:150px;overflow-y:auto;font-size:0.75rem;color:#999;padding:8px;background:#0a0a12;border-radius:8px;border:1px solid #1a1a25;line-height:1.6}.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:100;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.2s}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:420px;width:90%;box-shadow:0 20px 50px rgba(0,0,0,0.6);text-align:center}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#2a2a35;border-radius:4px}</style></head><body><div class="game-container" id="gameContainer"><div class="top-bar"><span class="title" id="gameTitle">🏔️ 仙途·问道</span><div class="spirit-stones"><span>💎</span>灵石：<span id="stoneCount">500</span></div></div><div class="main-panel" id="mainPanel"><div class="panel-box"><div class="panel-title"><span style="color:#d4a574;">●</span>当前出战编队</div><div class="team-preview" id="teamPreview"><div class="team-slot empty-slot" data-slot="0">➕</div><div class="team-slot empty-slot" data-slot="1">➕</div><div class="team-slot empty-slot" data-slot="2">➕</div></div></div><div class="btn-row"><button class="btn btn-primary" onclick="openGacha()">✨ 仙缘抽卡</button><button class="btn btn-secondary" onclick="openInventory()">📦 我的卡牌</button><button class="btn btn-danger" onclick="startBattle()">⚔️ 挑战强敌</button></div><div class="btn-row"><button class="btn btn-secondary btn-sm" onclick="quickGacha10()">🔮 十连抽 (900💎)</button><button class="btn btn-secondary btn-sm" onclick="addStones()">💎 获取灵石</button></div><div class="panel-box" id="battleLogBox" style="display:none;"><div class="panel-title"><span style="color:#d4a574;">●</span>战斗日志</div><div class="battle-log" id="battleLog"></div><div class="btn-row" style="margin-top:8px;" id="battleActions"></div></div></div></div><div id="modalContainer"></div><script>
-// ==================== 洪荒角色池 ====================
-const ROLE_POOL=[{id:'pangu',name:'盘古',realm:'混沌之主',rarity:'red',rarityName:'传说',stars:6,atk:280,def:110,hp:1200,maxHp:1200,skillName:'开天辟地',skillCost:60,skillMultiplier:5.5,skillDesc:'一斧分阴阳',emoji:'🪓',probability:0.006},{id:'hongjun',name:'鸿钧',realm:'大道化身',rarity:'red',rarityName:'传说',stars:6,atk:260,def:100,hp:1150,maxHp:1150,skillName:'造化玉碟',skillCost:58,skillMultiplier:5.2,skillDesc:'执掌天道',emoji:'☯️',probability:0.006},{id:'nvwa',name:'女娲',realm:'创世圣母',rarity:'red',rarityName:'传说',stars:6,atk:240,def:120,hp:1300,maxHp:1300,skillName:'抟土造人',skillCost:55,skillMultiplier:4.8,skillDesc:'创造生灵',emoji:'🌍',healAllRatio:0.3,probability:0.006},{id:'taishang',name:'太上老君',realm:'太清圣人',rarity:'gold',rarityName:'神品',stars:5,atk:180,def:85,hp:850,maxHp:850,skillName:'一气化三清',skillCost:55,skillMultiplier:4.2,skillDesc:'分身万千',emoji:'👴',probability:0.016},{id:'yuanshi',name:'元始天尊',realm:'玉清圣人',rarity:'gold',rarityName:'神品',stars:5,atk:195,def:75,hp:800,maxHp:800,skillName:'盘古幡',skillCost:52,skillMultiplier:4.5,skillDesc:'粉碎虚空',emoji:'📜',probability:0.016},{id:'tongtian',name:'通天教主',realm:'上清圣人',rarity:'gold',rarityName:'神品',stars:5,atk:210,def:65,hp:780,maxHp:780,skillName:'诛仙剑阵',skillCost:58,skillMultiplier:4.8,skillDesc:'四剑灭世',emoji:'⚔️',probability:0.016},{id:'dijun',name:'帝俊',realm:'妖帝',rarity:'gold',rarityName:'神品',stars:5,atk:185,def:80,hp:820,maxHp:820,skillName:'太阳真火',skillCost:50,skillMultiplier:4.0,skillDesc:'焚天煮海',emoji:'☀️',dotDamage:40,dotTurns:2,probability:0.016},{id:'donghuang',name:'东皇太一',realm:'远古妖皇',rarity:'gold',rarityName:'神品',stars:5,atk:200,def:70,hp:790,maxHp:790,skillName:'东皇钟',skillCost:48,skillMultiplier:4.3,skillDesc:'镇压万古',emoji:'🔔',buffDef:25,buffTurns:2,probability:0.016},{id:'dijiang',name:'帝江',realm:'空间祖巫',rarity:'purple',rarityName:'圣品',stars:4,atk:130,def:60,hp:650,maxHp:650,skillName:'空间撕裂',skillCost:48,skillMultiplier:3.5,skillDesc:'无视防御',emoji:'🌀',probability:0.03},{id:'zhujiuyin',name:'烛九阴',realm:'时间祖巫',rarity:'purple',rarityName:'圣品',stars:4,atk:125,def:65,hp:680,maxHp:680,skillName:'时间逆流',skillCost:50,skillMultiplier:3.2,skillDesc:'回溯生命',emoji:'⏳',healRatio:0.25,probability:0.03},{id:'houtu',name:'后土',realm:'中央祖巫',rarity:'purple',rarityName:'圣品',stars:4,atk:120,def:80,hp:720,maxHp:720,skillName:'轮回往生',skillCost:45,skillMultiplier:3.0,skillDesc:'普度众生',emoji:'🕊️',probability:0.03},{id:'gonggong',name:'共工',realm:'水神祖巫',rarity:'purple',rarityName:'圣品',stars:4,atk:140,def:55,hp:630,maxHp:630,skillName:'怒撞不周山',skillCost:52,skillMultiplier:3.8,skillDesc:'天崩地裂',emoji:'🌊',probability:0.03},{id:'zhurong',name:'祝融',realm:'火神祖巫',rarity:'purple',rarityName:'圣品',stars:4,atk:145,def:50,hp:610,maxHp:610,skillName:'焚天烈焰',skillCost:48,skillMultiplier:3.9,skillDesc:'烈火燎原',emoji:'🔥',dotDamage:35,dotTurns:2,probability:0.03},{id:'kunpeng',name:'鲲鹏',realm:'北冥妖师',rarity:'purple',rarityName:'圣品',stars:4,atk:135,def:58,hp:660,maxHp:660,skillName:'水击三千里',skillCost:46,skillMultiplier:3.6,skillDesc:'扶摇直上',emoji:'🐋',probability:0.03},{id:'minghe',name:'冥河',realm:'血海老祖',rarity:'purple',rarityName:'圣品',stars:4,atk:128,def:62,hp:700,maxHp:700,skillName:'血神子',skillCost:47,skillMultiplier:3.4,skillDesc:'化身亿万',emoji:'🩸',lifestealRatio:0.25,probability:0.03},{id:'zhenyuanzi',name:'镇元子',realm:'地仙之祖',rarity:'purple',rarityName:'圣品',stars:4,atk:122,def:75,hp:740,maxHp:740,skillName:'袖里乾坤',skillCost:44,skillMultiplier:3.1,skillDesc:'乾坤一袖',emoji:'👘',probability:0.03},{id:'hongyun',name:'红云',realm:'洪荒老好人',rarity:'blue',rarityName:'仙品',stars:3,atk:88,def:45,hp:520,maxHp:520,skillName:'九九散魄',skillCost:42,skillMultiplier:2.8,skillDesc:'红云消散',emoji:'☁️',probability:0.05},{id:'fuxi',name:'伏羲',realm:'人皇',rarity:'blue',rarityName:'仙品',stars:3,atk:92,def:48,hp:540,maxHp:540,skillName:'先天八卦',skillCost:40,skillMultiplier:2.9,skillDesc:'料敌先机',emoji:'☯️',buffDef:15,buffTurns:2,probability:0.05},{id:'shennong',name:'神农',realm:'炎帝',rarity:'blue',rarityName:'仙品',stars:3,atk:85,def:52,hp:560,maxHp:560,skillName:'尝百草',skillCost:38,skillMultiplier:2.5,skillDesc:'治愈众生',emoji:'🌿',healRatio:0.3,probability:0.05},{id:'xuanyuan',name:'轩辕',realm:'黄帝',rarity:'blue',rarityName:'仙品',stars:3,atk:96,def:46,hp:530,maxHp:530,skillName:'轩辕剑',skillCost:44,skillMultiplier:3.0,skillDesc:'圣道之剑',emoji:'🗡️',probability:0.05},{id:'jieyin',name:'接引',realm:'西方教主',rarity:'blue',rarityName:'仙品',stars:3,atk:80,def:55,hp:580,maxHp:580,skillName:'接引宝幢',skillCost:40,skillMultiplier:2.6,skillDesc:'普渡接引',emoji:'🛐',probability:0.05},{id:'zhunti',name:'准提',realm:'菩提祖师',rarity:'blue',rarityName:'仙品',stars:3,atk:83,def:54,hp:570,maxHp:570,skillName:'七宝妙树',skillCost:41,skillMultiplier:2.7,skillDesc:'刷尽万物',emoji:'🌳',probability:0.05},{id:'randeng',name:'燃灯',realm:'过去佛',rarity:'blue',rarityName:'仙品',stars:3,atk:90,def:50,hp:550,maxHp:550,skillName:'琉璃灯焰',skillCost:42,skillMultiplier:2.8,skillDesc:'灯火不熄',emoji:'🏮',dotDamage:25,dotTurns:2,probability:0.05},{id:'duobao',name:'多宝',realm:'多宝道人',rarity:'blue',rarityName:'仙品',stars:3,atk:86,def:47,hp:535,maxHp:535,skillName:'万宝齐出',skillCost:43,skillMultiplier:2.9,skillDesc:'法宝洪流',emoji:'💎',probability:0.05},{id:'jinling',name:'金灵圣母',realm:'截教仙',rarity:'green',rarityName:'灵品',stars:2,atk:68,def:30,hp:380,maxHp:380,skillName:'金霞冠',skillCost:35,skillMultiplier:2.2,skillDesc:'金光万丈',emoji:'👑',probability:0.08},{id:'wudang',name:'无当圣母',realm:'截教仙',rarity:'green',rarityName:'灵品',stars:2,atk:65,def:32,hp:400,maxHp:400,skillName:'无当剑诀',skillCost:34,skillMultiplier:2.1,skillDesc:'剑出无当',emoji:'🗡️',probability:0.08},{id:'zhaogongming',name:'赵公明',realm:'财神',rarity:'green',rarityName:'灵品',stars:2,atk:72,def:28,hp:370,maxHp:370,skillName:'定海珠',skillCost:36,skillMultiplier:2.4,skillDesc:'财可通神',emoji:'💰',probability:0.08},{id:'yunxiao',name:'云霄',realm:'三霄之首',rarity:'green',rarityName:'灵品',stars:2,atk:63,def:34,hp:410,maxHp:410,skillName:'混元金斗',skillCost:33,skillMultiplier:2.0,skillDesc:'收尽万物',emoji:'🏺',probability:0.08},{id:'qiongxiao',name:'琼霄',realm:'三霄之二',rarity:'green',rarityName:'灵品',stars:2,atk:66,def:31,hp:390,maxHp:390,skillName:'戳目珠',skillCost:32,skillMultiplier:2.0,skillDesc:'眩光夺目',emoji:'💫',probability:0.08},{id:'bixiao',name:'碧霄',realm:'三霄之三',rarity:'green',rarityName:'灵品',stars:2,atk:64,def:33,hp:395,maxHp:395,skillName:'缚龙索',skillCost:31,skillMultiplier:1.9,skillDesc:'龙缚九天',emoji:'⛓️',probability:0.08},{id:'guangchengzi',name:'广成子',realm:'阐教仙',rarity:'green',rarityName:'灵品',stars:2,atk:70,def:29,hp:385,maxHp:385,skillName:'番天印',skillCost:37,skillMultiplier:2.3,skillDesc:'翻天覆地',emoji:'🔨',probability:0.08},{id:'chijingzi',name:'赤精子',realm:'阐教仙',rarity:'white',rarityName:'凡品',stars:1,atk:38,def:15,hp:220,maxHp:220,skillName:'阴阳镜',skillCost:28,skillMultiplier:1.7,skillDesc:'照彻阴阳',emoji:'🪞',probability:0.1},{id:'yuding',name:'玉鼎真人',realm:'阐教仙',rarity:'white',rarityName:'凡品',stars:1,atk:42,def:12,hp:210,maxHp:210,skillName:'斩仙剑',skillCost:30,skillMultiplier:1.8,skillDesc:'一剑斩仙',emoji:'⚔️',probability:0.1},{id:'taiyi',name:'太乙真人',realm:'阐教仙',rarity:'white',rarityName:'凡品',stars:1,atk:40,def:14,hp:225,maxHp:225,skillName:'九龙神火罩',skillCost:32,skillMultiplier:1.9,skillDesc:'九龙焚天',emoji:'🔥',probability:0.1},{id:'huanglong',name:'黄龙真人',realm:'阐教仙',rarity:'white',rarityName:'凡品',stars:1,atk:36,def:16,hp:230,maxHp:230,skillName:'黄龙剑',skillCost:27,skillMultiplier:1.6,skillDesc:'黄龙出渊',emoji:'🐉',probability:0.1},{id:'lingbao',name:'灵宝大法师',realm:'阐教仙',rarity:'white',rarityName:'凡品',stars:1,atk:39,def:13,hp:215,maxHp:215,skillName:'灵宝诀',skillCost:29,skillMultiplier:1.7,skillDesc:'灵宝护体',emoji:'🛡️',probability:0.1}];
-let spiritStones=500,playerInventory=[],team=[null,null,null],uidCounter=0,battleState=null,gmClickCount=0;
-function generateUid(){return'uid_'+uidCounter++}
-function getRoleByUid(uid){return playerInventory.find(r=>r.uid===uid)}
-function initGame(){const s=[{...ROLE_POOL.find(r=>r.id==='chijingzi'),uid:generateUid(),hp:ROLE_POOL.find(r=>r.id==='chijingzi').maxHp,qi:0,maxQi:100},{...ROLE_POOL.find(r=>r.id==='yuding'),uid:generateUid(),hp:ROLE_POOL.find(r=>r.id==='yuding').maxHp,qi:0,maxQi:100},{...ROLE_POOL.find(r=>r.id==='taiyi'),uid:generateUid(),hp:ROLE_POOL.find(r=>r.id==='taiyi').maxHp,qi:0,maxQi:100}];playerInventory=s;team=[s[0].uid,s[1].uid,s[2].uid];uidCounter=3;spiritStones=500;battleState=null;renderAll()}
-function pullGacha(){const rand=Math.random();let cum=0,sel=ROLE_POOL[0];for(const r of ROLE_POOL){cum+=r.probability;if(rand<=cum){sel=r;break}}const nr={...sel,uid:generateUid(),hp:sel.maxHp,maxHp:sel.maxHp,qi:0,maxQi:100};playerInventory.push(nr);return nr}
-function pullGacha10(){const res=[];let hasRare=false;for(let i=0;i<10;i++){const r=pullGacha();res.push(r);if(['blue','purple','gold','red'].includes(r.rarity))hasRare=true}if(!hasRare){const rp=ROLE_POOL.filter(r=>['blue','purple','gold','red'].includes(r.rarity));const g=rp[Math.floor(Math.random()*rp.length)];const last=res[9];const idx=playerInventory.findIndex(r=>r.uid===last.uid);if(idx>=0)playerInventory.splice(idx,1);const nr={...g,uid:generateUid(),hp:g.maxHp,maxHp:g.maxHp,qi:0,maxQi:100};playerInventory.push(nr);res[9]=nr}return res}
-function renderAll(){document.getElementById('stoneCount').textContent=spiritStones;const c=document.getElementById('teamPreview');let h='';for(let i=0;i<3;i++){const uid=team[i];const r=uid?getRoleByUid(uid):null;if(r){h+=`<div class="team-slot filled card-rarity-${r.rarity}" data-slot="${i}" onclick="removeFromTeam(${i})"><div style="font-size:1.5rem;">${r.emoji}</div><div style="font-size:0.65rem;font-weight:bold;">${r.name}</div><div style="font-size:0.55rem;">${r.realm}</div></div>`}else{h+=`<div class="team-slot empty-slot" data-slot="${i}" onclick="openInventoryForSlot(${i})">➕</div>`}}c.innerHTML=h;const bb=document.getElementById('battleLogBox'),ld=document.getElementById('battleLog'),ad=document.getElementById('battleActions');if(battleState&&battleState.active){bb.style.display='block';ld.innerHTML=battleState.log.map(l=>`<div class="${l.cls||'log-info'}">${l.text}</div>`).join('');if(battleState.phase==='player_turn'&&!battleState.ended){ad.innerHTML=`<button class="btn btn-primary btn-sm" onclick="battleNormalAttack()">⚔️ 普通攻击</button><button class="btn btn-secondary btn-sm" onclick="battleSkill()">✨ ${battleState.playerActive?.skillName||'技能'}</button><button class="btn btn-danger btn-sm" onclick="fleeBattle()">🏃 撤退</button>`}else if(battleState.ended){ad.innerHTML=`<button class="btn btn-primary btn-sm" onclick="resetAfterBattle()">✅ 返回</button>`}else{ad.innerHTML=`<span style="color:#666;">敌方回合中...</span>`}}else{bb.style.display='none'}}
-function renderInventoryModal(slot=-1){const mod=document.getElementById('modalContainer');const sort=[...playerInventory].sort((a,b)=>{const o={red:0,gold:1,purple:2,blue:3,green:4,white:5};return(o[a.rarity]||99)-(o[b.rarity]||99)});let h=`<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3 style="color:#d4a574;">📦 我的卡牌 (${playerInventory.length})</h3><div class="inventory-grid">`;for(const r of sort){const inT=team.includes(r.uid);h+=`<div class="inv-card card-rarity-${r.rarity} ${inT?'selected':''}" onclick="${slot>=0?`selectForSlot('${r.uid}',${slot})`:`toggleTeamMembership('${r.uid}')`}"><span style="font-size:1.5rem;">${r.emoji}</span><span style="font-weight:bold;font-size:0.7rem;">${r.name}</span><span style="font-size:0.6rem;">${r.realm}</span><span style="font-size:0.55rem;">⭐${r.stars} ${r.rarityName}</span>${inT?'<span style="color:#f0c060;">[编队中]</span>':''}</div>`}if(playerInventory.length===0)h+='<div style="grid-column:1/-1;color:#555;padding:30px;">暂无卡牌</div>';h+=`</div><button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="closeModal()">关闭</button></div></div>`;mod.innerHTML=h}
-function renderGachaModal(results=null){const mod=document.getElementById('modalContainer');let rh='';if(results&&results.length){rh='<div class="gacha-result">';for(const r of results){rh+=`<div class="gacha-card card-rarity-${r.rarity}"><span style="font-size:1.8rem;">${r.emoji}</span><span style="font-weight:bold;font-size:0.7rem;">${r.name}</span><span style="font-size:0.6rem;">${r.realm}</span></div>`}rh+='</div>'}let h=`<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h3 style="color:#d4a574;">✨ 仙缘抽卡</h3><p style="color:#999;">灵石：<b style="color:#f0d6b8;">${spiritStones}</b> 💎</p><div class="btn-row"><button class="btn btn-primary" onclick="doSinglePull()">单抽 (100💎)</button><button class="btn btn-secondary" onclick="doTenPull()">十连抽 (900💎) 保底仙品</button></div>${rh}<button class="btn btn-secondary btn-sm" style="margin-top:10px;" onclick="closeModal()">关闭</button></div></div>`;mod.innerHTML=h}
-function renderBattleModal(){if(!battleState||!battleState.active)return;const mod=document.getElementById('modalContainer');const p=battleState.playerActive,e=battleState.enemyActive;if(!p||!e)return;let h=`<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" style="max-width:480px;" onclick="event.stopPropagation()"><h3 style="color:#d4a574;">⚔️ 仙道对决</h3><div class="battle-field"><div class="battle-side"><div>敌方: ${e.emoji} ${e.name} (${e.realm})</div><div class="hp-bar-outer"><div class="hp-bar-inner ${e.hp/e.maxHp>0.6?'hp-green':e.hp/e.maxHp>0.3?'hp-yellow':'hp-red'}" style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></div></div><span>HP:${Math.max(0,e.hp)}/${e.maxHp}</span></div><div class="vs-divider">⚡ VS ⚡</div><div class="battle-side"><div>我方: ${p.emoji} ${p.name} (${p.realm})</div><div class="hp-bar-outer"><div class="hp-bar-inner ${p.hp/p.maxHp>0.6?'hp-green':p.hp/p.maxHp>0.3?'hp-yellow':'hp-red'}" style="width:${Math.max(0,p.hp/p.maxHp*100)}%"></div></div><span>HP:${Math.max(0,p.hp)}/${p.maxHp}</span></div></div><div class="battle-log" style="max-height:120px;margin-top:8px;text-align:left;">${battleState.log.map(l=>`<div class="${l.cls||'log-info'}">${l.text}</div>`).join('')}</div><div class="btn-row" style="margin-top:10px;">`;if(battleState.phase==='player_turn'&&!battleState.ended){h+=`<button class="btn btn-primary btn-sm" onclick="battleNormalAttack()">⚔️ 普通攻击</button><button class="btn btn-secondary btn-sm" onclick="battleSkill()">✨ ${p.skillName}</button><button class="btn btn-danger btn-sm" onclick="fleeBattle()">🏃 撤退</button>`}else if(battleState.ended){h+=`<button class="btn btn-primary btn-sm" onclick="resetAfterBattle()">✅ 返回</button>`}else{h+=`<span style="color:#666;">敌方回合中...</span>`}h+=`</div></div></div>`;mod.innerHTML=h}
-function renderGMPanel(){const mod=document.getElementById('modalContainer');let h=`<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()" style="max-width:480px;"><h3 style="color:#ff5555;">🛠️ GM 管理员面板</h3><div style="display:flex; gap:8px; margin:10px 0; align-items:center;"><span>灵石：</span><input id="gmStoneInput" type="number" value="${spiritStones}" style="width:100px; background:#1a1a25; color:#fff; border:1px solid #444; border-radius:8px; padding:5px;"><button class="btn btn-primary btn-sm" onclick="gmSetStones()">修改</button></div><div class="btn-row" style="margin-bottom:10px;"><button class="btn btn-secondary btn-sm" onclick="gmAddAllRoles()">📦 一键获得全部角色</button><button class="btn btn-danger btn-sm" onclick="gmClearInventory()">🗑️ 清空背包</button></div><div style="margin:10px 0; font-size:0.8rem; color:#aaa;">指定添加角色：</div><select id="gmRoleSelect" style="background:#1a1a25; color:#fff; border:1px solid #444; border-radius:8px; padding:5px; width:100%; margin-bottom:10px;">${ROLE_POOL.map(r=>`<option value="${r.id}">${r.emoji} ${r.name} (${r.rarityName})</option>`).join('')}</select><button class="btn btn-primary btn-sm btn-block" onclick="gmAddSpecificRole()">添加此角色</button><button class="btn btn-secondary btn-sm btn-block" style="margin-top:8px;" onclick="closeModal()">关闭面板</button></div></div>`;mod.innerHTML=h}
-function gmSetStones(){const v=parseInt(document.getElementById('gmStoneInput').value);if(!isNaN(v)&&v>=0){spiritStones=v;renderAll();renderGMPanel()}}
-function gmAddAllRoles(){ROLE_POOL.forEach(r=>{const nr={...r,uid:generateUid(),hp:r.maxHp,maxHp:r.maxHp,qi:0,maxQi:100};playerInventory.push(nr)});renderAll();alert('全部角色已加入背包！')}
-function gmClearInventory(){playerInventory=[];team=[null,null,null];uidCounter=0;renderAll();closeModal();alert('背包与编队已清空。')}
-function gmAddSpecificRole(){const id=document.getElementById('gmRoleSelect').value;const t=ROLE_POOL.find(r=>r.id===id);if(t){const nr={...t,uid:generateUid(),hp:t.maxHp,maxHp:t.maxHp,qi:0,maxQi:100};playerInventory.push(nr);renderAll();alert(`已添加 ${t.name}`)}}
-function removeFromTeam(s){team[s]=null;renderAll()}
-function toggleTeamMembership(uid){const idx=team.indexOf(uid);if(idx>=0)team[idx]=null;else{const em=team.findIndex(s=>s===null);if(em>=0)team[em]=uid;else team[0]=uid}renderAll();renderInventoryModal()}
-function selectForSlot(uid,s){const ex=team.indexOf(uid);if(ex>=0&&ex!==s)team[ex]=null;team[s]=uid;renderAll();closeModal()}
-function openInventoryForSlot(s){renderInventoryModal(s)}
-function openInventory(){renderInventoryModal(-1)}
-function openGacha(results=null){renderGachaModal(results)}
-function closeModal(){document.getElementById('modalContainer').innerHTML='';renderAll()}
-function doSinglePull(){if(spiritStones<100){alert('灵石不足！');return}spiritStones-=100;const r=pullGacha();renderAll();renderGachaModal([r])}
-function doTenPull(){if(spiritStones<900){alert('灵石不足！');return}spiritStones-=900;const r=pullGacha10();renderAll();renderGachaModal(r)}
-function quickGacha10(){doTenPull()}
-function addStones(){spiritStones+=300;renderAll()}
-function startBattle(){const v=team.filter(u=>u&&getRoleByUid(u));if(!v.length){alert('请先编队！');return}const pc=v.map(u=>{const r=getRoleByUid(u);return{...r,hp:r.maxHp,qi:20,maxQi:100,isPlayer:!0,dotEffects:[],buffEffects:[]}});const ec=[];const pool=ROLE_POOL.filter(r=>['white','green','blue','purple','gold'].includes(r.rarity));for(let i=0;i<2+Math.floor(Math.random()*2);i++){const t=pool[Math.floor(Math.random()*pool.length)];ec.push({...t,uid:'enemy_'+i,hp:t.maxHp,qi:15+Math.floor(Math.random()*20),maxQi:100,isPlayer:!1,dotEffects:[],buffEffects:[]})}battleState={active:!0,playerTeam:pc,enemyTeam:ec,playerActiveIndex:0,enemyActiveIndex:0,playerActive:pc[0],enemyActive:ec[0],phase:'player_turn',ended:!1,winner:null,log:[{text:'⚔️ 战斗开始！',cls:'log-info'},{text:`我方: ${pc.map(r=>r.name).join('、')}`,cls:'log-info'},{text:`敌方: ${ec.map(r=>r.name).join('、')}`,cls:'log-info'}],turnCount:0};renderAll();renderBattleModal()}
-function updateActive(){if(!battleState||!battleState.active)return;let p=battleState.playerActiveIndex;while(p<battleState.playerTeam.length&&battleState.playerTeam[p].hp<=0)p++;if(p>=battleState.playerTeam.length)battleState.playerActive=null;else{battleState.playerActiveIndex=p;battleState.playerActive=battleState.playerTeam[p]}let e=battleState.enemyActiveIndex;while(e<battleState.enemyTeam.length&&battleState.enemyTeam[e].hp<=0)e++;if(e>=battleState.enemyTeam.length)battleState.enemyActive=null;else{battleState.enemyActiveIndex=e;battleState.enemyActive=battleState.enemyTeam[e]}if(!battleState.playerActive&&!battleState.ended)endBattle('enemy');else if(!battleState.enemyActive&&!battleState.ended)endBattle('player')}
-function endBattle(w){battleState.ended=!0;battleState.active=!1;battleState.winner=w;battleState.phase='ended';if(w==='player'){const rw=150+Math.floor(Math.random()*200);spiritStones+=rw;battleState.log.push({text:`🎉 胜利！+${rw}💎`,cls:'log-info'})}else{const ls=Math.floor(Math.random()*40);spiritStones=Math.max(0,spiritStones-ls);battleState.log.push({text:`💀 败北... -${ls}💎`,cls:'log-dmg'})}renderAll();renderBattleModal()}
-function execAtk(att,def,isSkill){let dmg=isSkill?att.atk*(att.skillMultiplier||2):att.atk;dmg=Math.max(5,Math.floor(dmg-def.def*0.4));const crit=Math.random()<(isSkill?0.2:0.08);if(crit)dmg=Math.floor(dmg*1.8);const map={white:0,green:1,blue:2,purple:3,gold:4,red:5};const diff=(map[att.rarity]||0)-(map[def.rarity]||0);if(diff>0)dmg=Math.floor(dmg*(1+diff*0.12));def.hp-=dmg;battleState.log.push({text:`${att.emoji}${att.name} ${isSkill?'【'+att.skillName+'】':''} → ${def.name} -${dmg}${crit?'💥暴击！':''}`,cls:crit?'log-crit':'log-dmg'});if(isSkill&&att.lifestealRatio){const heal=Math.floor(dmg*att.lifestealRatio);att.hp=Math.min(att.maxHp,att.hp+heal)}if(isSkill&&att.dotDamage&&def.hp>0){def.dotEffects.push({dmg:att.dotDamage,turns:att.dotTurns||2})}if(isSkill&&att.healRatio){const heal=Math.floor(att.maxHp*att.healRatio);att.hp=Math.min(att.maxHp,att.hp+heal)}if(def.hp<=0){def.hp=0;battleState.log.push({text:`💀 ${def.name}阵亡`,cls:'log-dmg'})}}
-function battleNormalAttack(){if(!battleState||battleState.phase!=='player_turn'||battleState.ended)return;execAtk(battleState.playerActive,battleState.enemyActive,!1);afterPlayerAction()}
-function battleSkill(){if(!battleState||battleState.phase!=='player_turn'||battleState.ended)return;const p=battleState.playerActive;if(!p)return;if((p.qi||0)<p.skillCost){battleState.log.push({text:'⚠️灵力不足',cls:'log-dmg'});renderBattleModal();return}p.qi-=p.skillCost;execAtk(p,battleState.enemyActive,!0);afterPlayerAction()}
-function afterPlayerAction(){updateActive();if(battleState.ended){renderAll();renderBattleModal();return}battleState.phase='enemy_turn';renderAll();renderBattleModal();setTimeout(enemyAction,800)}
-function enemyAction(){if(!battleState||battleState.ended||battleState.phase!=='enemy_turn')return;const e=battleState.enemyActive,p=battleState.playerActive;if(!e||!p){updateActive();renderBattleModal();return}e.qi=Math.min(100,(e.qi||0)+25);p.qi=Math.min(100,(p.qi||0)+20);if(e.qi>=e.skillCost&&Math.random()<0.5){e.qi-=e.skillCost;execAtk(e,p,!0)}else execAtk(e,p,!1);updateActive();if(battleState.ended){renderAll();renderBattleModal();return}battleState.phase='player_turn';battleState.turnCount++;battleState.log.push({text:`▶ 第${battleState.turnCount+1}回合`,cls:'log-info'});renderAll();renderBattleModal()}
-function fleeBattle(){if(!battleState||battleState.ended)return;spiritStones=Math.max(0,spiritStones-25);battleState.log.push({text:'🏃 撤退 -25💎',cls:'log-dmg'});battleState.ended=!0;battleState.active=!1;battleState.winner='enemy';renderAll();renderBattleModal()}
-function resetAfterBattle(){battleState=null;closeModal();renderAll()}
-document.getElementById('gameTitle').addEventListener('click',function(){gmClickCount++;if(gmClickCount>=5){gmClickCount=0;renderGMPanel()}setTimeout(()=>{if(gmClickCount>0)gmClickCount=0},2000)});
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仙途·问道 Enhanced</title>
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --panel: #12121a;
+            --border: #2a2a3a;
+            --text: #e0e0e0;
+            --accent: #ff6b6b;
+            --success: #51cf66;
+            --info: #4dabf7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ffd43b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat-label {
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            color: var(--info);
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--accent), #ff5252);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .gacha-btn {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .character-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .character-card:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+        }
+        
+        .character-card.selected {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #0d3818, #1a5c2d);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .char-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .stars {
+            color: #ffd43b;
+            font-size: 14px;
+        }
+        
+        .rarity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        .rarity-red {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .rarity-gold {
+            background: #ffd43b;
+            color: #000;
+        }
+        
+        .rarity-purple {
+            background: #cc5de8;
+            color: white;
+        }
+        
+        .rarity-blue {
+            background: #4dabf7;
+            color: white;
+        }
+        
+        .rarity-green {
+            background: #51cf66;
+            color: white;
+        }
+        
+        .rarity-white {
+            background: #adb5bd;
+            color: white;
+        }
+        
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            margin: 8px 0;
+        }
+        
+        .stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 6px;
+            border-radius: 3px;
+        }
+        
+        .star-upgrade {
+            background: linear-gradient(135deg, #ffd43b, #ffb700);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .star-upgrade:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(255, 180, 0, 0.4);
+        }
+        
+        .star-upgrade:disabled,
+        .star-upgrade.disabled {
+            background: #6c757d;
+            color: #fff;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .team-slot {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .team-slot:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .team-slot.filled {
+            border-style: solid;
+            background: linear-gradient(135deg, rgba(81, 207, 102, 0.1), rgba(77, 171, 247, 0.1));
+            border-color: var(--success);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-box {
+            background: var(--panel);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .gacha-result {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .gacha-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            animation: popIn 0.5s ease-out;
+        }
+        
+        .gacha-card.new {
+            border-color: var(--success);
+            box-shadow: 0 0 15px rgba(81, 207, 102, 0.3);
+        }
+        
+        .gacha-card.duplicate {
+            border-color: var(--accent);
+            opacity: 0.8;
+        }
+        
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .upgrade-panel {
+            background: linear-gradient(135deg, rgba(255, 180, 0, 0.1), rgba(255, 107, 107, 0.1));
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .upgrade-panel h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .upgrade-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+        
+        .upgrade-stat .old {
+            color: #adb5bd;
+            text-decoration: line-through;
+        }
+        
+        .upgrade-stat .new {
+            color: var(--success);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="panel">
+        <div class="title" id="gameTitle">🎴 仙途·问道</div>
+        <div class="stat-row">
+            <span class="stat-label">💎 灵石</span>
+            <span class="stat-value" id="stoneCount">500</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">👥 角色数量</span>
+            <span class="stat-value" id="charCount">0</span>
+        </div>
+        <div class="button-group">
+            <button class="gacha-btn" onclick="doSinglePull()">单抽 -100💎</button>
+            <button class="gacha-btn" onclick="doTenPull()">十连 -900💎</button>
+        </div>
+        <button onclick="openInventory()" style="width: 100%; margin-top: 10px;">📖 查看背包</button>
+    </div>
+    
+    <div class="panel">
+        <div style="font-size: 18px; font-weight: bold; color: var(--success); margin-bottom: 15px;">⚔️ 编队出战</div>
+        <div id="teamPreview" style="display: grid; gap: 10px;"></div>
+        <button onclick="startBattle()" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, var(--success), #51cf66);">🔥 开始战斗</button>
+    </div>
+</div>
+
+<div id="modalContainer"></div>
+
+<script>
+// ==================== 角色基础池 ====================
+const ROLE_POOL = [
+    {
+        id: 'pangu',
+        name: '盘古',
+        realm: '混沌之主',
+        rarity: 'red',
+        rarityName: '传说',
+        probability: 0.005,
+        baseStars: 1,
+        atk: 280, def: 110, hp: 1200,
+        skillName: '开天辟地',
+        skillCost: 60,
+        skillMultiplier: 5.5,
+        artwork: 'https://via.placeholder.com/400x300?text=盘古',
+        model: 'pangu_model'
+    },
+    {
+        id: 'nüwa',
+        name: '女娲',
+        realm: '创世之主',
+        rarity: 'red',
+        rarityName: '传说',
+        probability: 0.005,
+        baseStars: 1,
+        atk: 260, def: 130, hp: 1100,
+        skillName: '补天',
+        skillCost: 55,
+        skillMultiplier: 5.0,
+        artwork: 'https://via.placeholder.com/400x300?text=女娲',
+        model: 'nüwa_model'
+    },
+    {
+        id: 'fuxi',
+        name: '伏羲',
+        realm: '先天之祖',
+        rarity: 'red',
+        rarityName: '传说',
+        probability: 0.005,
+        baseStars: 1,
+        atk: 250, def: 120, hp: 1050,
+        skillName: '先天八卦',
+        skillCost: 50,
+        skillMultiplier: 4.8,
+        artwork: 'https://via.placeholder.com/400x300?text=伏羲',
+        model: 'fuxi_model'
+    },
+    {
+        id: 'yuding',
+        name: '元丁',
+        realm: '圣人',
+        rarity: 'gold',
+        rarityName: '史诗',
+        probability: 0.02,
+        baseStars: 1,
+        atk: 180, def: 90, hp: 800,
+        skillName: '离火焚天',
+        skillCost: 45,
+        skillMultiplier: 4.0,
+        artwork: 'https://via.placeholder.com/400x300?text=元丁',
+        model: 'yuding_model'
+    },
+    {
+        id: 'chijingzi',
+        name: '赤精子',
+        realm: '金仙',
+        rarity: 'gold',
+        rarityName: '史诗',
+        probability: 0.02,
+        baseStars: 1,
+        atk: 160, def: 85, hp: 750,
+        skillName: '离火剑阵',
+        skillCost: 40,
+        skillMultiplier: 3.8,
+        artwork: 'https://via.placeholder.com/400x300?text=赤精子',
+        model: 'chijingzi_model'
+    },
+    {
+        id: 'guangchengzi',
+        name: '广成子',
+        realm: '金仙',
+        rarity: 'purple',
+        rarityName: '稀有',
+        probability: 0.08,
+        baseStars: 1,
+        atk: 140, def: 80, hp: 700,
+        skillName: '玄黄剑气',
+        skillCost: 35,
+        skillMultiplier: 3.5,
+        artwork: 'https://via.placeholder.com/400x300?text=广成子',
+        model: 'guangchengzi_model'
+    },
+    {
+        id: 'huanglong',
+        name: '黄龙真人',
+        realm: '大罗金仙',
+        rarity: 'blue',
+        rarityName: '精良',
+        probability: 0.15,
+        baseStars: 1,
+        atk: 120, def: 70, hp: 650,
+        skillName: '龙息术',
+        skillCost: 30,
+        skillMultiplier: 3.2,
+        artwork: 'https://via.placeholder.com/400x300?text=黄龙',
+        model: 'huanglong_model'
+    },
+    {
+        id: 'manjusri',
+        name: '文殊菩萨',
+        realm: '菩萨',
+        rarity: 'blue',
+        rarityName: '精良',
+        probability: 0.15,
+        baseStars: 1,
+        atk: 130, def: 65, hp: 620,
+        skillName: '智慧剑光',
+        skillCost: 32,
+        skillMultiplier: 3.3,
+        artwork: 'https://via.placeholder.com/400x300?text=文殊',
+        model: 'manjusri_model'
+    },
+    {
+        id: 'samantabhadra',
+        name: '普贤菩萨',
+        realm: '菩萨',
+        rarity: 'green',
+        rarityName: '稀见',
+        probability: 0.25,
+        baseStars: 1,
+        atk: 100, def: 60, hp: 550,
+        skillName: '普贤象王功',
+        skillCost: 28,
+        skillMultiplier: 3.0,
+        artwork: 'https://via.placeholder.com/400x300?text=普贤',
+        model: 'samantabhadra_model'
+    },
+    {
+        id: 'guanyu',
+        name: '关羽',
+        realm: '武圣',
+        rarity: 'white',
+        rarityName: '常见',
+        probability: 0.5,
+        baseStars: 1,
+        atk: 80, def: 50, hp: 450,
+        skillName: '青龙偃月',
+        skillCost: 25,
+        skillMultiplier: 2.5,
+        artwork: 'https://via.placeholder.com/400x300?text=关羽',
+        model: 'guanyu_model'
+    }
+];
+
+// ==================== 全局游戏状态 ====================
+let spiritStones = 500;
+let playerInventory = [];
+let team = [null, null, null];
+let uidCounter = 0;
+let battleState = null;
+let gmClickCount = 0;
+
+// ==================== 工具函数 ====================
+function generateUid() {
+    return 'uid_' + uidCounter++;
+}
+
+function getRoleByUid(uid) {
+    return playerInventory.find(r => r.uid === uid);
+}
+
+// ==================== 升星系统 ====================
+function getStarUpgradeStats(character, newStars) {
+    const starBonus = (newStars - character.stars) * 0.15;
+    return {
+        atk: Math.floor(character.atk * (1 + starBonus)),
+        def: Math.floor(character.def * (1 + starBonus)),
+        hp: Math.floor(character.maxHp * (1 + starBonus))
+    };
+}
+
+function upgradeCharacterStar(uid) {
+    const char = getRoleByUid(uid);
+    if (!char) return false;
+    
+    const maxStars = 6;
+    const nextStars = Math.min(char.stars + 1, maxStars);
+    
+    if (char.stars >= maxStars) {
+        alert('该角色已达最高星级！');
+        return false;
+    }
+    
+    const upgradeCost = char.stars * 100;
+    if (spiritStones < upgradeCost) {
+        alert(`升星需要 ${upgradeCost} 灵石，当前不足！`);
+        return false;
+    }
+    
+    spiritStones -= upgradeCost;
+    char.stars = nextStars;
+    
+    const newStats = getStarUpgradeStats(char, nextStars);
+    char.atk = newStats.atk;
+    char.def = newStats.def;
+    char.maxHp = newStats.hp;
+    char.hp = newStats.hp;
+    
+    const message = `${char.name} ⭐ 升星成功！\n当前星级：${char.stars}⭐`;
+    alert(message);
+    
+    renderAll();
+    return true;
+}
+
+// ==================== 抽卡系统 ====================
+function pullGacha() {
+    const rand = Math.random();
+    let cum = 0, selected = ROLE_POOL[0];
+    
+    for (const role of ROLE_POOL) {
+        cum += role.probability;
+        if (rand <= cum) {
+            selected = role;
+            break;
+        }
+    }
+    
+    return {
+        ...selected,
+        uid: generateUid(),
+        stars: selected.baseStars,
+        hp: selected.hp,
+        maxHp: selected.hp,
+        qi: 0,
+        maxQi: 100
+    };
+}
+
+function pullGacha10() {
+    const results = [];
+    let hasRare = false;
+    
+    for (let i = 0; i < 10; i++) {
+        const r = pullGacha();
+        results.push(r);
+        if (['red', 'gold', 'purple'].includes(r.rarity)) hasRare = true;
+    }
+    
+    if (!hasRare) {
+        const rp = ROLE_POOL.filter(r => ['red', 'gold', 'purple'].includes(r.rarity));
+        results[9] = {
+            ...rp[Math.floor(Math.random() * rp.length)],
+            uid: generateUid(),
+            stars: 1,
+            hp: ROLE_POOL[0].hp,
+            maxHp: ROLE_POOL[0].hp,
+            qi: 0,
+            maxQi: 100
+        };
+    }
+    
+    return results;
+}
+
+function handleGachaPull(newCharacters) {
+    const results = [];
+    
+    for (const newChar of newCharacters) {
+        const existing = playerInventory.find(c => c.id === newChar.id);
+        
+        if (existing) {
+            // 重复角色升星
+            existing.stars = Math.min(6, existing.stars + 1);
+            const bonusStats = getStarUpgradeStats(existing, existing.stars);
+            existing.atk = bonusStats.atk;
+            existing.def = bonusStats.def;
+            existing.maxHp = bonusStats.hp;
+            existing.hp = bonusStats.hp;
+            
+            results.push({
+                ...newChar,
+                isDuplicate: true,
+                targetChar: existing
+            });
+        } else {
+            playerInventory.push(newChar);
+            results.push({
+                ...newChar,
+                isDuplicate: false
+            });
+        }
+    }
+    
+    return results;
+}
+
+// ==================== 渲染函数 ====================
+function renderAll() {
+    document.getElementById('stoneCount').textContent = spiritStones;
+    document.getElementById('charCount').textContent = playerInventory.length;
+    
+    const teamPreview = document.getElementById('teamPreview');
+    let html = '';
+    
+    for (let i = 0; i < 3; i++) {
+        const uid = team[i];
+        const role = uid ? getRoleByUid(uid) : null;
+        
+        html += `<div class="team-slot ${role ? 'filled' : ''}" onclick="openInventoryForSlot(${i})">`;
+        if (role) {
+            html += `
+                <div style="width: 100%;">
+                    <div style="font-weight: bold; color: var(--success);">${role.name}</div>
+                    <div style="font-size: 12px; color: var(--text);">⭐ ${role.stars} | HP: ${role.hp}/${role.maxHp}</div>
+                    <div style="font-size: 11px; color: #adb5bd; margin-top: 5px;">${role.realm}</div>
+                </div>
+            `;
+        } else {
+            html += '<span style="color: #6c757d;">+ 点击选择角色</span>';
+        }
+        html += '</div>';
+    }
+    
+    teamPreview.innerHTML = html;
+}
+
+function renderInventoryModal(slot = -1) {
+    const sortedChars = [...playerInventory].sort((a, b) => {
+        const rarityOrder = { red: 0, gold: 1, purple: 2, blue: 3, green: 4, white: 5 };
+        const rarityDiff = rarityOrder[a.rarity] - rarityOrder[b.rarity];
+        return rarityDiff !== 0 ? rarityDiff : b.stars - a.stars;
+    });
+    
+    let html = '<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    html += '<div class="modal-header">📦 角色背包 (' + playerInventory.length + ')</div>';
+    
+    if (sortedChars.length === 0) {
+        html += '<div style="text-align: center; padding: 20px; color: #adb5bd;">背包为空，快去抽卡吧！</div>';
+    } else {
+        html += '<div style="max-height: 600px; overflow-y: auto;">';
+        for (const char of sortedChars) {
+            const isSelected = slot >= 0 && team[slot] === char.uid;
+            
+            html += `<div class="character-card ${isSelected ? 'selected' : ''}" onclick="selectForSlot('${char.uid}', ${slot})">`;
+            html += `<div class="card-header">`;
+            html += `<span class="char-name">${char.name}</span>`;
+            html += `<span class="stars">⭐${char.stars}</span>`;
+            html += `</div>`;
+            html += `<div><span class="rarity-badge rarity-${char.rarity}">${char.rarityName}</span>${char.realm}</div>`;
+            html += `<div class="card-stats">`;
+            html += `<div class="stat">⚔️ ATK: ${char.atk}</div>`;
+            html += `<div class="stat">🛡️ DEF: ${char.def}</div>`;
+            html += `<div class="stat">❤️ HP: ${char.hp}/${char.maxHp}</div>`;
+            html += `<div class="stat">💫 技能: ${char.skillName}</div>`;
+            html += `</div>`;
+            
+            if (char.stars < 6) {
+                const upgradeCost = char.stars * 100;
+                html += `<div class="star-upgrade" onclick="event.stopPropagation(); upgradeCharacterStar('${char.uid}')">`;
+                html += `升星 (需 ${upgradeCost}💎) → ⭐${char.stars + 1}`;
+                html += `</div>`;
+                
+                const newStats = getStarUpgradeStats(char, char.stars + 1);
+                html += `<div class="upgrade-panel">`;
+                html += `<h3>升星后属性预览</h3>`;
+                html += `<div class="upgrade-stat"><span>ATK:</span><span><span class="old">${char.atk}</span> → <span class="new">${newStats.atk}</span></span></div>`;
+                html += `<div class="upgrade-stat"><span>DEF:</span><span><span class="old">${char.def}</span> → <span class="new">${newStats.def}</span></span></div>`;
+                html += `<div class="upgrade-stat"><span>HP:</span><span><span class="old">${char.maxHp}</span> → <span class="new">${newStats.hp}</span></span></div>`;
+                html += `</div>`;
+            } else {
+                html += `<div class="star-upgrade disabled">已满星（6⭐）</div>`;
+            }
+            
+            html += `</div>`;
+        }
+        html += '</div>';
+    }
+    
+    html += '</div></div>';
+    document.getElementById('modalContainer').innerHTML = html;
+}
+
+function renderGachaModal(results = null) {
+    const mod = document.getElementById('modalContainer');
+    let html = '<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">';
+    
+    if (results && results.length) {
+        html += '<div class="modal-header">🎉 抽卡结果</div>';
+        html += '<div class="gacha-result">';
+        
+        for (const r of results) {
+            const cardClass = r.isDuplicate ? 'duplicate' : 'new';
+            const icon = r.isDuplicate ? '⭐' : '✨';
+            
+            html += `<div class="gacha-card ${cardClass}">`;
+            html += `<div style="font-size: 20px; margin-bottom: 5px;">${icon}</div>`;
+            html += `<div style="font-weight: bold; font-size: 14px;">${r.name}</div>`;
+            html += `<div style="font-size: 12px; color: var(--accent);">⭐${r.isDuplicate ? r.targetChar.stars : r.stars}</div>`;
+            html += `<span class="rarity-badge rarity-${r.rarity}">${r.rarityName}</span>`;
+            
+            if (r.isDuplicate) {
+                html += `<div style="font-size: 11px; color: var(--success); margin-top: 5px;">已升星！</div>`;
+            }
+            
+            html += `</div>`;
+        }
+        
+        html += '</div>';
+    }
+    
+    html += `<button onclick="closeModal()" style="width: 100%; margin-top: 15px;">确定</button>`;
+    html += '</div></div>';
+    mod.innerHTML = html;
+}
+
+// ==================== 界面交互 ====================
+function selectForSlot(uid, slot) {
+    if (slot >= 0) {
+        const existingIdx = team.indexOf(uid);
+        if (existingIdx >= 0 && existingIdx !== slot) {
+            team[existingIdx] = null;
+        }
+        team[slot] = uid;
+    }
+    renderAll();
+    closeModal();
+}
+
+function openInventoryForSlot(slot) {
+    renderInventoryModal(slot);
+}
+
+function openInventory() {
+    renderInventoryModal(-1);
+}
+
+function closeModal() {
+    document.getElementById('modalContainer').innerHTML = '';
+    renderAll();
+}
+
+// ==================== 抽卡操作 ====================
+function doSinglePull() {
+    if (spiritStones < 100) {
+        alert('灵石不足！');
+        return;
+    }
+    
+    spiritStones -= 100;
+    const newChar = pullGacha();
+    const results = handleGachaPull([newChar]);
+    renderAll();
+    renderGachaModal(results);
+}
+
+function doTenPull() {
+    if (spiritStones < 900) {
+        alert('灵石不足！');
+        return;
+    }
+    
+    spiritStones -= 900;
+    const newChars = pullGacha10();
+    const results = handleGachaPull(newChars);
+    renderAll();
+    renderGachaModal(results);
+}
+
+// ==================== 战斗系统 ====================
+function startBattle() {
+    const playerTeamUids = team.filter(u => u && getRoleByUid(u));
+    if (!playerTeamUids.length) {
+        alert('请先编队！');
+        return;
+    }
+    
+    alert('⚔️ 战斗功能开发中...');
+}
+
+// ==================== GM面板 ====================
+function renderGMPanel() {
+    const mod = document.getElementById('modalContainer');
+    let html = `<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()" style="max-width: 500px;">`;
+    
+    html += `<div class="modal-header">⚙️ GM面板</div>`;
+    html += `
+        <div style="margin: 15px 0;">
+            <label style="display: block; margin-bottom: 5px;">设置灵石数量:</label>
+            <input id="gmStoneInput" type="number" value="${spiritStones}" style="width: 100%; padding: 8px; background: var(--border); border: 1px solid var(--border); border-radius: 5px; color: var(--text);" />
+            <button onclick="gmSetStones()" style="width: 100%; margin-top: 10px;">确定</button>
+        </div>
+        <div style="margin: 15px 0;">
+            <label style="display: block; margin-bottom: 5px;">添加指定角色:</label>
+            <select id="gmRoleSelect" style="width: 100%; padding: 8px; background: var(--border); border: 1px solid var(--border); border-radius: 5px; color: var(--text);">
+    `;
+    
+    for (const role of ROLE_POOL) {
+        html += `<option value="${role.id}">${role.name}</option>`;
+    }
+    
+    html += `
+            </select>
+            <button onclick="gmAddSpecificRole()" style="width: 100%; margin-top: 10px;">添加</button>
+        </div>
+        <div class="button-group">
+            <button onclick="gmAddAllRoles()" style="flex: 1;">添加全部角色</button>
+            <button onclick="gmClearInventory()" style="flex: 1; background: var(--accent);">清空背包</button>
+        </div>
+    `;
+    
+    html += `</div></div>`;
+    mod.innerHTML = html;
+}
+
+function gmSetStones() {
+    const val = parseInt(document.getElementById('gmStoneInput').value);
+    if (!isNaN(val) && val >= 0) {
+        spiritStones = val;
+        renderAll();
+        renderGMPanel();
+    }
+}
+
+function gmAddAllRoles() {
+    ROLE_POOL.forEach(r => {
+        const newRole = {
+            ...r,
+            uid: generateUid(),
+            stars: 1,
+            hp: r.hp,
+            maxHp: r.hp,
+            qi: 0,
+            maxQi: 100
+        };
+        playerInventory.push(newRole);
+    });
+    
+    renderAll();
+    alert('全部角色已加入背包！');
+}
+
+function gmClearInventory() {
+    playerInventory = [];
+    team = [null, null, null];
+    uidCounter = 0;
+    renderAll();
+    closeModal();
+    alert('背包与编队已清空。');
+}
+
+function gmAddSpecificRole() {
+    const id = document.getElementById('gmRoleSelect').value;
+    const template = ROLE_POOL.find(r => r.id === id);
+    
+    if (template) {
+        const newRole = {
+            ...template,
+            uid: generateUid(),
+            stars: 1,
+            hp: template.hp,
+            maxHp: template.hp,
+            qi: 0,
+            maxQi: 100
+        };
+        playerInventory.push(newRole);
+        renderAll();
+        renderGMPanel();
+    }
+}
+
+// ==================== 初始化 ====================
+function initGame() {
+    const starter = [{
+        ...ROLE_POOL.find(r => r.id === 'chijingzi'),
+        uid: generateUid(),
+        stars: 1,
+        hp: ROLE_POOL.find(r => r.id === 'chijingzi').maxHp,
+        maxHp: ROLE_POOL.find(r => r.id === 'chijingzi').maxHp,
+        qi: 0,
+        maxQi: 100
+    }, {
+        ...ROLE_POOL.find(r => r.id === 'yuding'),
+        uid: generateUid(),
+        stars: 1,
+        hp: ROLE_POOL.find(r => r.id === 'yuding').maxHp,
+        maxHp: ROLE_POOL.find(r => r.id === 'yuding').maxHp,
+        qi: 0,
+        maxQi: 100
+    }];
+    
+    playerInventory = starter;
+    team = [starter[0].uid, starter[1].uid, null];
+    renderAll();
+}
+
+// ==================== 事件监听 ====================
+document.getElementById('gameTitle').addEventListener('click', function() {
+    gmClickCount++;
+    if (gmClickCount >= 5) {
+        gmClickCount = 0;
+        renderGMPanel();
+    }
+    setTimeout(() => {
+        if (gmClickCount > 0) gmClickCount = 0;
+    }, 2000);
+});
+
 initGame();
-</script></body></html>
+</script>
+</body>
+</html>
